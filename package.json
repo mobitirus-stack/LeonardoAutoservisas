@@ -1,0 +1,23 @@
+{
+  "name": "leonardo-autoservisas",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "engines": { "node": ">=20.3.0" },
+  "scripts": {
+    "assets": "node scripts/gen-assets.mjs && node scripts/subset-fonts.mjs",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview --port 4322",
+    "check": "node scripts/check-seo.mjs && node scripts/validate-schema.mjs && node scripts/check-contrast.mjs && node scripts/check-glyphs.mjs",
+    "indexnow": "node scripts/indexnow.mjs"
+  },
+  "dependencies": {
+    "astro": "5.18.2",
+    "fontkit": "^2.0.4",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "subset-font": "^2.4.0"
+  }
+}

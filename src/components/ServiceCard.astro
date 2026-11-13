@@ -1,0 +1,18 @@
+---
+import type { Service } from '../data/services';
+import { serviceUrl, formatPrice } from '../data/services';
+import Icon from './Icon.astro';
+interface Props { s: Service; featured?: boolean; headingLevel?: 'h2' | 'h3' }
+const { s, featured = false, headingLevel: H = 'h3' } = Astro.props;
+---
+{!s.confirmed && <Fragment set:html={`<!-- NEPATVIRTINTA: ${s.name} -->`} />}
+<li class="reveal">
+  <article class:list={['svc-card', { 'is-featured': featured }]}>
+    <div class="svc-icon"><Icon name={s.icon} /></div>
+    {featured && <span class="tag">Pagrindinė paslauga</span>}
+    <H style={`view-transition-name:svc-${s.slug}`}><a href={serviceUrl(s)}>{s.name}</a></H>
+    {s.priceFrom && <p class="price-from">{formatPrice(s.priceFrom)}</p>}
+    <p>{s.summary}</p>
+    <span class="more" aria-hidden="true">Plačiau <Icon name="arrow" /></span>
+  </article>
+</li>

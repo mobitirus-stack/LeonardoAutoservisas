@@ -1,0 +1,8 @@
+---
+import { site } from '../config/site';
+import Icon from './Icon.astro';
+---
+<div class="call-bar">
+  <a class="btn btn-primary" href={site.phoneHref}><Icon name="phone" />Skambinti</a>
+  <a class="btn btn-secondary" href={site.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />Maršrutas</a>
+</div>

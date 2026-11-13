@@ -1,0 +1,29 @@
+---
+import { site } from '../config/site';
+import Icon from './Icon.astro';
+const path = Astro.url.pathname;
+const links = [
+  { href: '/paslaugos/', label: 'Paslaugos' },
+  { href: '/#duk', label: 'DUK' },
+  { href: '/kontaktai/', label: 'Kontaktai' },
+];
+const current = (href: string) => (href !== '/#duk' && path.startsWith(href) ? 'page' : undefined);
+---
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="/" aria-label="Leonardo autoservisas – pagrindinis puslapis">
+      <img src="/img/emblema-88.png" srcset="/img/emblema-88.png 1x, /img/emblema-176.png 2x" width="72" height="44" alt="" decoding="async">
+      <span class="brand-text" aria-hidden="true"><span class="brand-name">Leonardo</span><span class="brand-sub">autoservisas</span></span>
+    </a>
+    <nav class="nav" aria-label="Pagrindinis meniu">
+      {links.map((l) => <a href={l.href} aria-current={current(l.href)}>{l.label}</a>)}
+    </nav>
+    <a class="btn btn-primary header-call" href={site.phoneHref}>
+      <Icon name="phone" /><span class="label">Skambinti</span><span class="visually-hidden"> {site.phone}</span>
+    </a>
+  </div>
+  <nav class="menu-mobile" aria-label="Meniu">
+    <a href="/" aria-current={path === '/' ? 'page' : undefined}>Pradžia</a>
+    {links.map((l) => <a href={l.href} aria-current={current(l.href)}>{l.label}</a>)}
+  </nav>
+</header>

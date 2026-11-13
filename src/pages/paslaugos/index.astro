@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import Ribbon from '../../components/Ribbon.astro';
+import Icon from '../../components/Icon.astro';
+import { site, BUILD_DATE } from '../../config/site';
+import { services } from '../../data/services';
+import { graph, businessNode, websiteNode, webPageNode, breadcrumbNode, itemListNode } from '../../lib/schema';
+
+const path = '/paslaugos/';
+const title = 'Autoserviso paslaugos Pašilaičiuose | Leonardo autoservisas';
+const description = 'Leonardo autoserviso paslaugos Pašilaičiuose, Vilniuje: tepalų keitimas, stabdžių remontas ir kiti darbai. Laisvės pr. 125. Skambinkite +370 699 47163.';
+const crumbs = [{ name: 'Pradžia', path: '/' }, { name: 'Paslaugos', path }];
+const schema = graph([businessNode(), websiteNode(), webPageNode({ path, title, description, type: 'CollectionPage', crumbs }), breadcrumbNode(path, crumbs), itemListNode(path)]);
+const featured = services.filter((s) => s.confirmed);
+const others = services.filter((s) => !s.confirmed);
+---
+<Base title={title} description={description} path={path} schema={schema} ogImage="/og/paslaugos.jpg">
+  <div class="page-head">
+    <div class="watermark" aria-hidden="true"></div>
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <Ribbon>Paslaugos</Ribbon>
+      <h1>Automobilių remonto paslaugos Pašilaičiuose, Vilniuje</h1>
+      <p class="lead">Leonardo autoservisas, {site.address.full}, pagrindinės paslaugos – tepalų keitimas ir stabdžių remontas. Pasirinkite paslaugą ir sužinokite, kada jos reikia, ką ji apima ir nuo ko priklauso kaina.</p>
+    </div>
+  </div>
+  <section class="section" aria-labelledby="list-h" style="padding-top:clamp(36px,5vw,56px)">
+    <div class="wrap">
+      <h2 id="list-h" class="visually-hidden">Paslaugų sąrašas</h2>
+      <ul class="svc-grid featured">{featured.map((s) => <ServiceCard s={s} featured />)}</ul>
+      {others.length > 0 && <ul class="svc-grid">{others.map((s) => <ServiceCard s={s} />)}</ul>}
+      <div class="frame contact-card" style="margin-top:40px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between">
+        <div>
+          <h2 style="font-size:1.5rem;margin-bottom:.3em">Neradote reikiamos paslaugos?</h2>
+          <p class="muted" style="margin:0">Paskambinkite – pasakysime, ar galime padėti, ir suderinsime laiką.</p>
+        </div>
+        <a class="btn btn-primary" href={site.phoneHref}><Icon name="phone" />Skambinti&nbsp;{site.phone.replace(/ /g, ' ')}</a>
+      </div>
+      <p class="updated">Atnaujinta: <time datetime={BUILD_DATE}>{BUILD_DATE}</time></p>
+    </div>
+  </section>
+</Base>

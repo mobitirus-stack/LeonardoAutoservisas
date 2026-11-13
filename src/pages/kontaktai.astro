@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Ribbon from '../components/Ribbon.astro';
+import ContactCard from '../components/ContactCard.astro';
+import Hours from '../components/Hours.astro';
+import MapFacade from '../components/MapFacade.astro';
+import { site, filled, BUILD_DATE } from '../config/site';
+import { graph, businessNode, websiteNode, webPageNode, breadcrumbNode } from '../lib/schema';
+
+const path = '/kontaktai/';
+const title = 'Kontaktai ir darbo laikas | Leonardo autoservisas Vilniuje';
+const description = 'Leonardo autoservisas: Laisvės pr. 125, 06118 Vilnius (Pašilaičiai). Telefonas +370 699 47163, darbo laikas I–V 08:00–17:00. Maršrutas „Google Maps“.';
+const crumbs = [{ name: 'Pradžia', path: '/' }, { name: 'Kontaktai', path }];
+const schema = graph([businessNode(), websiteNode(), webPageNode({ path, title, description, type: 'ContactPage', crumbs }), breadcrumbNode(path, crumbs)]);
+---
+<Base title={title} description={description} path={path} schema={schema} ogImage="/og/kontaktai.jpg">
+  <div class="page-head">
+    <div class="watermark" aria-hidden="true"></div>
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <Ribbon>Kontaktai</Ribbon>
+      <h1>Leonardo autoserviso kontaktai</h1>
+      <p class="lead">Leonardo autoservisas yra {site.address.full}, Pašilaičiuose. Registracija telefonu {site.phone.replace(/ /g, ' ')}.</p>
+    </div>
+  </div>
+  <section class="section" aria-labelledby="kont-h" style="padding-top:clamp(36px,5vw,56px)">
+    <div class="wrap">
+      <h2 id="kont-h">Kaip susisiekti su Leonardo autoservisu?</h2>
+      <p class="lead" style="margin-bottom:28px">Paprasčiausia – paskambinti. Telefonu susitarsime dėl laiko, o atvykus apžiūrėsime automobilį ir suderinsime darbus bei kainą.</p>
+      <div class="contact-grid">
+        <ContactCard />
+        <div class="frame contact-card"><Hours /><p class="note">Prieš atvykstant rekomenduojame paskambinti.</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="section" aria-labelledby="map-h" style="padding-top:0">
+    <div class="wrap">
+      <h2 id="map-h">Kaip atvykti į Leonardo autoservisą?</h2>
+      <p>Servisas įsikūręs Pašilaičiuose, prie Laisvės prospekto, adresu {site.address.full}.{filled(site.entrance) ? ` ${site.entrance}` : ' Tikslų įvažiavimą pasakysime paskambinus.'}</p>
+      {!filled(site.entrance) && <Fragment set:html={'<!-- TODO_ENTRANCE: patikslinti įvažiavimą (galbūt iš J. Baltrušaičio g.) -->'} />}
+      <MapFacade />
+      <p class="updated">Atnaujinta: <time datetime={BUILD_DATE}>{BUILD_DATE}</time></p>
+    </div>
+  </section>
+</Base>

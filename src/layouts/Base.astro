@@ -1,0 +1,83 @@
+---
+import '../styles/global.css';
+import { site, abs } from '../config/site';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CallBar from '../components/CallBar.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  schema?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  preloadHero?: boolean;
+}
+const { title, description, path, schema, ogImage = '/og/pagrindinis.jpg', noindex = false, preloadHero = false } = Astro.props;
+const canonical = abs(path);
+const robots = noindex ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+const v = site.verification;
+---
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  {!noindex && <link rel="canonical" href={canonical}>}
+  <meta name="robots" content={robots}>
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content={site.themeColor}>
+  <meta name="application-name" content={site.name}>
+  <meta name="apple-mobile-web-app-title" content={site.shortName}>
+  <meta name="format-detection" content="telephone=no">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="lt_LT">
+  <meta property="og:site_name" content={site.name}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={abs(ogImage)}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content={title}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={abs(ogImage)}>
+  {v.google && <meta name="google-site-verification" content={v.google}>}
+  {v.bing && <meta name="msvalidate.01" content={v.bing}>}
+  {v.yandex && <meta name="yandex-verification" content={v.yandex}>}
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
+  <link rel="alternate" type="text/plain" href="/llms-full.txt" title="llms-full.txt">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/grenze-gotisch.woff2" as="font" type="font/woff2" crossorigin>
+  {preloadHero && <>
+    <link rel="preload" as="image" type="image/avif" href="/img/hero-m-720.avif" imagesrcset="/img/hero-m-480.avif 480w, /img/hero-m-720.avif 720w, /img/hero-m-1080.avif 1080w" imagesizes="100vw" media="(max-width: 699px)" fetchpriority="high">
+    <link rel="preload" as="image" type="image/avif" href="/img/hero-1920.avif" imagesrcset="/img/hero-960.avif 960w, /img/hero-1280.avif 1280w, /img/hero-1920.avif 1920w, /img/hero-2560.avif 2560w" imagesizes="100vw" media="(min-width: 700px)" fetchpriority="high">
+  </>}
+  {schema && <script type="application/ld+json" set:html={schema} />}
+</head>
+<body>
+  <a class="skip" href="#turinys">Pereiti prie turinio</a>
+  <Header />
+  <main id="turinys">
+    <slot />
+  </main>
+  <Footer />
+  <CallBar />
+  {site.GA4_ID && <div class="consent" id="consent" hidden data-ga={site.GA4_ID}>
+    <p>Naudojame analitinius slapukus („Google Analytics“), kad suprastume, kaip lankytojai naudojasi svetaine. Plačiau – <a href="/privatumo-politika/">privatumo politikoje</a>.</p>
+    <div class="btn-row"><button class="btn btn-primary" type="button" data-consent="granted">Sutinku</button><button class="btn btn-secondary" type="button" data-consent="denied">Nesutinku</button></div>
+  </div>
+  <script is:inline src="/js/consent.js" defer></script>}
+</body>
+</html>

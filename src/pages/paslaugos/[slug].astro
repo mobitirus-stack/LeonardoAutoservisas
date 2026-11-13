@@ -1,0 +1,106 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Ribbon from '../../components/Ribbon.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import { site, BUILD_DATE } from '../../config/site';
+import { services, relatedServices, serviceUrl, formatPrice, type Service } from '../../data/services';
+import { nb } from "../../lib/nb";
+import { graph, businessNode, websiteNode, webPageNode, breadcrumbNode, faqNode, serviceNode } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+}
+const { s } = Astro.props as { s: Service };
+const path = serviceUrl(s);
+const crumbs = [{ name: 'Pradžia', path: '/' }, { name: 'Paslaugos', path: '/paslaugos/' }, { name: s.name, path }];
+const schema = graph([
+  businessNode(), websiteNode(),
+  webPageNode({ path, title: s.title, description: s.description, crumbs, image: `/og/${s.slug}.jpg` }),
+  breadcrumbNode(path, crumbs), serviceNode(s), faqNode(path, s.faq),
+]);
+const related = relatedServices(s);
+const phoneNb = site.phone.replace(/ /g, ' ');
+const lower = s.name.charAt(0).toLowerCase() + s.name.slice(1);
+---
+<Base title={s.title} description={s.description} path={path} schema={schema} ogImage={`/og/${s.slug}.jpg`}>
+  {!s.confirmed && <Fragment set:html={`<!-- NEPATVIRTINTA PASLAUGA: ${s.name} – patvirtinti su klientu prieš paleidimą -->`} />}
+  <div class="page-head">
+    <div class="watermark" aria-hidden="true"></div>
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <Ribbon><Icon name={s.icon} class="ribbon-icon" />{s.confirmed ? 'Pagrindinė paslauga' : 'Paslauga'}</Ribbon>
+      <h1 style={`view-transition-name:svc-${s.slug}`}>{s.h1}</h1>
+      {s.priceFrom && <p class="price-from" style="font-size:1.25rem">{formatPrice(s.priceFrom)}</p>}
+      <div class="btn-row" style="margin-top:20px">
+        <a class="btn btn-primary" href={site.phoneHref}><Icon name="phone" />Skambinti&nbsp;{phoneNb}</a>
+        <a class="btn btn-secondary" href={site.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />Kaip atvykti</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap svc-layout">
+    <article class="prose">
+      <div class="frame answer-box">
+        <span class="label">Trumpai</span>
+        <p>{nb(s.answer)}</p>
+      </div>
+
+      <h2>{s.whenTitle}</h2>
+      <ul>{s.when.map((x) => <li>{x}</li>)}</ul>
+
+      <h2>{s.includesTitle}</h2>
+      <ul>{s.includes.map((x) => <li>{x}</li>)}</ul>
+
+      <h2>Kaip vyksta darbas?</h2>
+      <ol class="process">{s.process.map((x) => <li>{nb(x)}</li>)}</ol>
+
+      {s.extra.map((e) => (
+        <>
+          <h2>{e.title}</h2>
+          {e.paragraphs.map((p) => <p>{p}</p>)}
+        </>
+      ))}
+
+      <h2>{s.priceTitle}</h2>
+      {s.priceFrom && <p><strong>{s.name}: {formatPrice(s.priceFrom)}.</strong></p>}
+      {s.price.map((p) => <p>{nb(p)}</p>)}
+
+      <h2>{s.faqTitle}</h2>
+      <Faq items={s.faq} openFirst={false} />
+
+      {related.length > 0 && (
+        <>
+          <h2>Susijusios paslaugos</h2>
+          <ul class="related">
+            {related.map((r) => <li><a href={serviceUrl(r)}>{r.name}</a> – {r.summary.charAt(0).toLowerCase() + r.summary.slice(1)}</li>)}
+          </ul>
+        </>
+      )}
+
+      <p class="updated">Atnaujinta: <time datetime={BUILD_DATE}>{BUILD_DATE}</time></p>
+    </article>
+
+    <aside class="aside" aria-label="Kontaktai">
+      <div class="frame aside-card">
+        <h2>Registracija – {lower}</h2>
+        <ul>
+          <li><strong>{site.name}</strong></li>
+          <li>{site.address.full}</li>
+          <li>{site.address.district}</li>
+          <li>Darbo laikas: {site.hoursShort}</li>
+          <li>„Google“: {site.rating.valueText} iš 5 ({site.rating.count} atsiliepimai)</li>
+        </ul>
+        <a class="btn btn-primary" href={site.phoneHref}><Icon name="phone" />{phoneNb}</a>
+        <a class="btn btn-secondary" href={site.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />Maršrutas</a>
+      </div>
+      <nav class="frame aside-card" aria-label="Kitos paslaugos">
+        <h2>Kitos paslaugos</h2>
+        <ul>
+          {services.filter((x) => x.slug !== s.slug).map((x) => <li><a href={serviceUrl(x)}>{x.name}</a></li>)}
+        </ul>
+      </nav>
+    </aside>
+  </div>
+</Base>

@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { site, filled, BUILD_DATE } from '../config/site';
+import { graph, businessNode, websiteNode, webPageNode, breadcrumbNode } from '../lib/schema';
+const path = '/privatumo-politika/';
+const title = 'Privatumo politika | Leonardo autoservisas';
+const description = 'Leonardo autoserviso svetainės privatumo politika: kokie duomenys tvarkomi, kodėl, kiek laiko saugomi ir kokias teises turite pagal BDAR.';
+const crumbs = [{ name: 'Pradžia', path: '/' }, { name: 'Privatumo politika', path }];
+const schema = graph([businessNode(), websiteNode(), webPageNode({ path, title, description, crumbs }), breadcrumbNode(path, crumbs)]);
+const controller = filled(site.legalName) ? site.legalName : 'TODO_LEGAL_NAME';
+const code = filled(site.companyCode) ? site.companyCode : 'TODO_COMPANY_CODE';
+const email = filled(site.email) ? site.email : 'TODO_EMAIL';
+---
+<Base title={title} description={description} path={path} schema={schema}>
+  <div class="wrap narrow legal">
+    <Breadcrumbs items={crumbs} />
+    <h1>Privatumo politika</h1>
+    <Fragment set:html={'<!-- TODO: užpildyti rekvizitus (TODO_LEGAL_NAME, TODO_COMPANY_CODE, TODO_EMAIL) ir peržiūrėti su klientu -->'} />
+    <p>Ši privatumo politika paaiškina, kaip {site.name} tvarko asmens duomenis, kai naudojatės šia svetaine ar susisiekiate su mumis. Duomenys tvarkomi pagal Bendrąjį duomenų apsaugos reglamentą (BDAR, ES 2016/679) ir Lietuvos Respublikos teisės aktus.</p>
+    <h2>Duomenų valdytojas</h2>
+    <p>{controller}, įmonės kodas {code}, adresas {site.address.full}, tel. {site.phone}, el. paštas {email}.</p>
+    <h2>Kokius duomenis tvarkome ir kodėl?</h2>
+    <ul>
+      <li><strong>Susisiekimo duomenys</strong> (vardas, telefono numeris, automobilio duomenys), kai paskambinate ar parašote – kad galėtume suderinti vizitą ir atlikti darbus. Pagrindas – sutarties sudarymas ir vykdymas (BDAR 6 str. 1 d. b p.).</li>
+      <li><strong>Techniniai duomenys</strong> (IP adresas, naršyklės tipas, užklausos laikas), kuriuos automatiškai fiksuoja svetainės talpinimo paslaugų teikėjas – svetainės saugumui ir veikimui užtikrinti. Pagrindas – teisėtas interesas (BDAR 6 str. 1 d. f p.).</li>
+    </ul>
+    <h2>Slapukai ir trečiųjų šalių turinys</h2>
+    <p>Svetainė nenaudoja reklaminių ar sekimo slapukų.{site.GA4_ID ? ' Analitiniai „Google Analytics“ slapukai įrašomi tik gavus jūsų sutikimą.' : ''} „Google Maps“ žemėlapis įkeliamas tik paspaudus mygtuką „Rodyti žemėlapį“ – tada „Google“ gali tvarkyti jūsų duomenis pagal savo privatumo politiką.</p>
+    <h2>Kiek laiko saugome duomenis?</h2>
+    <p>Susisiekimo ir užsakymų duomenis saugome tiek, kiek reikia paslaugai suteikti ir teisės aktų reikalavimams (pvz., apskaitos) įvykdyti. Techninius serverio žurnalus talpinimo paslaugų teikėjas saugo ribotą laiką.</p>
+    <h2>Kam perduodame duomenis?</h2>
+    <p>Duomenis galime perduoti tik paslaugų teikėjams, padedantiems mums veikti (pvz., svetainės talpinimo), ir institucijoms, kai to reikalauja įstatymai. Duomenų neparduodame.</p>
+    <h2>Jūsų teisės</h2>
+    <p>Turite teisę susipažinti su savo duomenimis, prašyti juos ištaisyti, ištrinti, apriboti tvarkymą, nesutikti su tvarkymu ir gauti duomenis perkeliamu formatu. Dėl šių teisių kreipkitės {email} arba tel. {site.phone}. Taip pat galite pateikti skundą Valstybinei duomenų apsaugos inspekcijai (vdai.lrv.lt).</p>
+    <p class="updated">Atnaujinta: <time datetime={BUILD_DATE}>{BUILD_DATE}</time></p>
+  </div>
+</Base>

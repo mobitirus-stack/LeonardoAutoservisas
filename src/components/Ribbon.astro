@@ -1,0 +1,5 @@
+---
+interface Props { light?: boolean; as?: 'p' | 'span' }
+const { light = false, as: Tag = 'p' } = Astro.props;
+---
+<Tag class:list={['ribbon', { 'ribbon-light': light }]}><slot /></Tag>

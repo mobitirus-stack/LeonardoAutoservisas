@@ -1,0 +1,10 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../config/site';
+const full = Math.floor(site.rating.value);
+const half = site.rating.value - full >= 0.5;
+---
+<div class="stars" role="img" aria-label={`Įvertinimas ${site.rating.valueText} iš 5`}>
+  {Array.from({ length: full }).map(() => <Icon name="star" />)}
+  {half && <Icon name="starHalf" />}
+</div>

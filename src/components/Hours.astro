@@ -1,0 +1,12 @@
+---
+import { site } from '../config/site';
+---
+{site.hoursTodo && <Fragment set:html={'<!-- TODO_HOURS: darbo laikas – placeholderis, patikslinti su klientu -->'} />}
+<table class="hours">
+  <caption>Darbo laikas</caption>
+  <tbody>
+    {site.hours.map((h) => (
+      <tr><th scope="row">{h.label}</th><td>{h.opens ? `${h.opens}–${h.closes}` : 'Nedirba'}</td></tr>
+    ))}
+  </tbody>
+</table>

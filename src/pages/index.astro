@@ -1,0 +1,210 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Ribbon from '../components/Ribbon.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import Faq from '../components/Faq.astro';
+import ContactCard from '../components/ContactCard.astro';
+import Hours from '../components/Hours.astro';
+import MapFacade from '../components/MapFacade.astro';
+import Stars from '../components/Stars.astro';
+import { site, SHOW_UNCONFIRMED_SERVICES } from '../config/site';
+import { services } from '../data/services';
+import { homeFaq } from '../data/faq';
+import { nb } from "../lib/nb";
+import { graph, businessNode, websiteNode, webPageNode, faqNode } from '../lib/schema';
+
+const title = 'Autoservisas Pašilaičiuose, Vilniuje | Leonardo autoservisas';
+const description = 'Leonardo autoservisas Pašilaičiuose, Laisvės pr. 125, Vilniuje: tepalų keitimas, stabdžių remontas ir priežiūra. Google 4,5 ★. Skambinkite +370 699 47163.';
+const schema = graph([businessNode(), websiteNode(), webPageNode({ path: '/', title, description }), faqNode('/', homeFaq)]);
+
+const featured = services.filter((s) => s.confirmed);
+const others = services.filter((s) => !s.confirmed);
+const phoneNb = site.phone.replace(/ /g, ' ');
+
+const why = [
+  { icon: 'star', title: `${site.rating.valueText} iš 5 „Google“`, text: `Tokį vidutinį įvertinimą Leonardo autoservisui skyrė ${site.rating.count} klientai „Google“ (${site.rating.asOf} duomenimis).` },
+  { icon: 'pin', title: 'Patogu Pašilaičiuose', text: 'Servisas įsikūręs prie Laisvės prospekto – lengvai pasiekiamas iš Pašilaičių, Fabijoniškių, Justiniškių ir Pilaitės.' },
+  { icon: 'oil', title: 'Tepalai ir stabdžiai', text: 'Pagrindinės paslaugos – tepalų keitimas ir stabdžių remontas: darbai, kurių automobiliui reikia reguliariai.' },
+  { icon: 'chat', title: 'Aiškiai prieš darbus', text: 'Prieš pradedant darbus aptariama, ką reikia atlikti, ir suderinama kaina.' },
+  ...site.extraAdvantages.map((a) => ({ icon: 'sparkle', ...a })),
+];
+const steps = [
+  { title: 'Skambutis', text: `Paskambinkite ${site.phone} ir susitarkime dėl jums patogaus laiko.` },
+  { title: 'Atvykimas ir apžiūra', text: `Atvykite adresu ${site.address.street} – apžiūrėsime automobilį ir išklausysime, kas neramina.` },
+  { title: 'Darbų ir kainos suderinimas', text: 'Paaiškiname, ką reikia atlikti, ir suderiname kainą prieš pradedant.' },
+  { title: 'Atliekami darbai', text: 'Atliekame suderintus darbus ir grąžiname automobilį, pasakę, kas padaryta.' },
+];
+const leadServices = SHOW_UNCONFIRMED_SERVICES
+  ? 'Tepalų keitimas, stabdžių remontas, diagnostika ir važiuoklė'
+  : 'Tepalų keitimas, stabdžių remontas ir automobilio priežiūra';
+---
+<Base title={title} description={description} path="/" schema={schema} preloadHero>
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="hero-media">
+      <picture>
+        <source media="(max-width: 699px)" type="image/avif" srcset="/img/hero-m-480.avif 480w, /img/hero-m-720.avif 720w, /img/hero-m-1080.avif 1080w" sizes="100vw">
+        <source media="(max-width: 699px)" type="image/webp" srcset="/img/hero-m-480.webp 480w, /img/hero-m-720.webp 720w, /img/hero-m-1080.webp 1080w" sizes="100vw">
+        <source media="(max-width: 699px)" srcset="/img/hero-m-480.jpg 480w, /img/hero-m-720.jpg 720w, /img/hero-m-1080.jpg 1080w" sizes="100vw">
+        <source type="image/avif" srcset="/img/hero-960.avif 960w, /img/hero-1280.avif 1280w, /img/hero-1920.avif 1920w, /img/hero-2560.avif 2560w" sizes="100vw">
+        <source type="image/webp" srcset="/img/hero-960.webp 960w, /img/hero-1280.webp 1280w, /img/hero-1920.webp 1920w, /img/hero-2560.webp 2560w" sizes="100vw">
+        <img src="/img/hero-1920.jpg" srcset="/img/hero-960.jpg 960w, /img/hero-1280.jpg 1280w, /img/hero-1920.jpg 1920w, /img/hero-2560.jpg 2560w" sizes="100vw" width="1920" height="1080" alt="Automechanikas taiso automobilį autoservise – tikrina variklio tepalus po pakeltu automobiliu" fetchpriority="high" decoding="async">
+      </picture>
+    </div>
+    <div class="hero-watermark" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <Ribbon><span class="goth">Leonardo</span> Pašilaičiai · Vilnius</Ribbon>
+        <h1 id="hero-h">Autoservisas Pašilaičiuose, Vilniuje <span class="accent">– Leonardo autoservisas</span></h1>
+        <p class="lead">{leadServices} – Laisvės pr. 125, Pašilaičiuose. Kaina suderinama prieš pradedant darbus.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href={site.phoneHref}><Icon name="phone" />Skambinti&nbsp;{phoneNb}</a>
+          <a class="btn btn-ghost-light" href={site.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />Kaip atvykti</a>
+        </div>
+        <ul class="trust">
+          <li><Icon name="star" /><span><strong>{site.rating.valueText}</strong> · {site.rating.count} „Google“ atsiliepimai</span></li>
+          <li><Icon name="pin" /><span>{site.address.street}, {site.address.district}</span></li>
+          <li><Icon name="clock" /><span>{site.hoursShort}</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="apie" aria-labelledby="apie-h">
+    <div class="wrap about-grid">
+      <div class="about-text reveal">
+        <Ribbon>Trumpai</Ribbon>
+        <h2 id="apie-h">Trumpai apie Leonardo autoservisą</h2>
+        <p>Leonardo autoservisas – automobilių remonto servisas Vilniuje, Pašilaičiuose, adresu Laisvės pr. 125. Pagrindinės paslaugos – tepalų keitimas ir stabdžių remontas. „Google“ naudotojai servisą vertina {site.rating.valueText} iš 5 pagal {site.rating.count} atsiliepimus. Dėl darbų ir laiko galima susitarti telefonu {phoneNb}, o kaina suderinama prieš pradedant darbus.</p>
+        <p class="muted">Servisas patogiai pasiekiamas iš Pašilaičių, Fabijoniškių, Justiniškių, Pilaitės ir kitų šiaurės vakarų Vilniaus rajonų.</p>
+      </div>
+      <dl class="frame facts reveal">
+        <div><dt>Pavadinimas</dt><dd>{site.name}</dd></div>
+        <div><dt>Adresas</dt><dd>{site.address.full}</dd></div>
+        <div><dt>Rajonas</dt><dd>{site.address.district}, prie Laisvės pr.</dd></div>
+        <div><dt>Telefonas</dt><dd><a href={site.phoneHref}>{phoneNb}</a></dd></div>
+        <div><dt>Darbo laikas</dt><dd>{site.hoursShort}</dd></div>
+        <div><dt>Įvertinimas</dt><dd>{site.rating.valueText} iš 5 „Google“ ({site.rating.count} atsiliepimai)</dd></div>
+        <div><dt>Paslaugos</dt><dd>Tepalų keitimas, stabdžių remontas{others.length > 0 && ` ir dar ${others.length}`}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="paslaugos" aria-labelledby="paslaugos-h">
+    <div class="wrap">
+      <div class="section-head center">
+        <Ribbon>Paslaugos</Ribbon>
+        <h2 id="paslaugos-h">Kokias automobilių paslaugas teikiame Pašilaičiuose?</h2>
+        <p class="lead" style="margin-inline:auto">Pagrindinės Leonardo autoserviso paslaugos – tepalų keitimas ir stabdžių remontas. Kiekvienos paslaugos puslapyje rasite, kada jos reikia, ką ji apima ir nuo ko priklauso kaina.</p>
+      </div>
+      <ul class="svc-grid featured">
+        {featured.map((s) => <ServiceCard s={s} featured />)}
+      </ul>
+      {others.length > 0 && (
+        <ul class="svc-grid">
+          {others.map((s) => <ServiceCard s={s} />)}
+        </ul>
+      )}
+      <p style="text-align:center;margin-top:32px"><a class="btn btn-secondary" href="/paslaugos/">Visos paslaugos<Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <section class="section section-dark on-dark" id="kodel-mes" aria-labelledby="kodel-h">
+    <div class="watermark" aria-hidden="true" style="right:-8%;top:-10%"></div>
+    <div class="wrap">
+      <div class="section-head">
+        <Ribbon light>Kodėl mes</Ribbon>
+        <h2 id="kodel-h">Kodėl vairuotojai renkasi Leonardo autoservisą?</h2>
+      </div>
+      <ul class="why-grid">
+        {why.map((w) => (
+          <li class="why-item reveal"><Icon name={w.icon} /><h3>{w.title}</h3><p>{w.text}</p></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="kaip-vyksta" aria-labelledby="kaip-h">
+    <div class="wrap">
+      <div class="section-head">
+        <Ribbon>Kaip vyksta</Ribbon>
+        <h2 id="kaip-h">Kaip užsiregistruoti ir kaip vyksta remontas?</h2>
+        <p class="lead">Registracija – telefonu. Prieš pradedant darbus visada aptariama, ką reikia atlikti, ir suderinama kaina.</p>
+      </div>
+      <ol class="steps">
+        {steps.map((s) => <li class="reveal"><h3>{s.title}</h3><p>{nb(s.text)}</p></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="atsiliepimai" aria-labelledby="atsiliepimai-h">
+    <div class="wrap">
+      <div class="section-head center">
+        <Ribbon>Atsiliepimai</Ribbon>
+        <h2 id="atsiliepimai-h">Ką sako klientai?</h2>
+      </div>
+      <div class="frame rating-box reveal">
+        <p class="rating-num" style="margin:0">{site.rating.valueText}<small> / 5</small></p>
+        <div>
+          <Stars />
+          <p><strong>{site.rating.count} atsiliepimai „Google“</strong> ({site.rating.asOf} duomenimis). Atsiliepimų tekstus ir naujausius vertinimus rasite „Google Maps“ profilyje.</p>
+        </div>
+        <a class="btn btn-primary" href={site.mapsUrl} rel="noopener" target="_blank">Skaityti „Google“ atsiliepimus</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="vietoves" aria-labelledby="vietoves-h">
+    <div class="wrap narrow">
+      <Ribbon>Aptarnaujamos vietovės</Ribbon>
+      <h2 id="vietoves-h">Iš kurių Vilniaus rajonų pas mus atvyksta?</h2>
+      <p>Leonardo autoservisas įsikūręs Pašilaičiuose, prie Laisvės prospekto, todėl patogiausiai pasiekiamas iš šiaurės vakarinės Vilniaus dalies. Laisvės prospektu patogu atvykti iš Fabijoniškių, Justiniškių, Viršuliškių ar Karoliniškių, o netoliese yra ir Pilaitė, Perkūnkiemis, Bajorai bei Santariškės.</p>
+      <ul class="chips">
+        {site.areas.map((a, i) => <li class:list={{ 'is-home': i === 0 }}>{a}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="duk" aria-labelledby="duk-h">
+    <div class="wrap">
+      <div class="section-head">
+        <Ribbon>DUK</Ribbon>
+        <h2 id="duk-h">Dažniausiai užduodami klausimai</h2>
+      </div>
+      <Faq items={homeFaq} />
+    </div>
+  </section>
+
+  <section class="section" id="kontaktai" aria-labelledby="kontaktai-h">
+    <div class="wrap">
+      <div class="section-head">
+        <Ribbon>Kontaktai</Ribbon>
+        <h2 id="kontaktai-h">Susisiekite su Leonardo autoservisu</h2>
+      </div>
+      <div class="contact-grid">
+        <ContactCard />
+        <div class="frame contact-card"><Hours /><p class="note">Prieš atvykstant rekomenduojame paskambinti.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="zemelapis" aria-labelledby="zemelapis-h" style="padding-top:0">
+    <div class="wrap">
+      <h2 id="zemelapis-h">Raskite mus žemėlapyje</h2>
+      <MapFacade />
+    </div>
+  </section>
+
+  <section class="section-dark on-dark cta-band" aria-labelledby="cta-h">
+    <div class="watermark" aria-hidden="true"></div>
+    <div class="wrap">
+      <img class="cta-emblem" src="/img/emblema-176.png" width="120" height="73" alt="" loading="lazy" decoding="async">
+      <h2 id="cta-h">Laikas pakeisti tepalus ar patikrinti stabdžius?</h2>
+      <p class="lead" style="margin-inline:auto">Skambinkite {phoneNb} – susitarsime dėl laiko.</p>
+      <div class="btn-row">
+        <a class="btn btn-cream" href={site.phoneHref}><Icon name="phone" />Skambinti&nbsp;{phoneNb}</a>
+        <a class="btn btn-ghost-light" href={site.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />Maršrutas</a>
+      </div>
+    </div>
+  </section>
+</Base>

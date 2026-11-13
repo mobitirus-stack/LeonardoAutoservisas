@@ -1,0 +1,50 @@
+---
+import { site, BUILD_DATE, filled } from '../config/site';
+import { services, serviceUrl } from '../data/services';
+const year = BUILD_DATE.slice(0, 4);
+---
+<footer class="site-footer on-dark">
+  <div class="watermark" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="footer-sticker" href="/" aria-label="Leonardo autoservisas – pagrindinis puslapis">
+          <picture>
+            <source type="image/webp" srcset="/img/leonardo-logo-300.webp 300w, /img/leonardo-logo-600.webp 600w" sizes="180px">
+            <img src="/img/leonardo-logo-300.png" width="180" height="162" alt="Leonardo autoservisas logotipas" loading="lazy" decoding="async">
+          </picture>
+        </a>
+        <p>Autoservisas Pašilaičiuose, Vilniuje. Tepalų keitimas, stabdžių remontas ir automobilio priežiūra.</p>
+      </div>
+      <div>
+        <p class="footer-title">Kontaktai</p>
+        <address>
+          <ul class="footer-list">
+            <li>{site.address.full}</li>
+            <li><a href={site.phoneHref}>{site.phone.replace(/ /g, ' ')}</a></li>
+            {filled(site.email) && <li><a href={`mailto:${site.email}`}>{site.email}</a></li>}
+            <li><a href={site.mapsUrl} rel="noopener" target="_blank">„Google Maps“ maršrutas</a></li>
+          </ul>
+        </address>
+      </div>
+      <div>
+        <p class="footer-title">Darbo laikas</p>
+        <ul class="footer-list">
+          {site.hours.map((h) => <li>{h.short}: {h.opens ? `${h.opens}–${h.closes}` : 'nedirba'}</li>)}
+        </ul>
+      </div>
+      <nav aria-label="Paslaugos">
+        <p class="footer-title">Paslaugos</p>
+        <ul class="footer-list">
+          {services.map((s) => <li><a href={serviceUrl(s)}>{s.name}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-meta">
+      <span>© {year} {site.name}</span>
+      <span>Atnaujinta: <time datetime={BUILD_DATE}>{BUILD_DATE}</time></span>
+      <a href="/privatumo-politika/">Privatumo politika</a>
+      <a href="/kontaktai/">Kontaktai</a>
+    </div>
+  </div>
+</footer>

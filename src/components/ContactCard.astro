@@ -1,0 +1,18 @@
+---
+import { site, filled } from '../config/site';
+import Icon from './Icon.astro';
+---
+<div class="frame contact-card">
+  <address>
+    <ul class="contact-list">
+      <li><Icon name="pin" /><span><strong>{site.name}</strong>{site.address.full}<br>{site.address.district}{filled(site.entrance) && <><br>{site.entrance}</>}</span></li>
+      <li><Icon name="phone" /><span><strong>Telefonas</strong><a href={site.phoneHref}>{site.phone.replace(/ /g, ' ')}</a></span></li>
+      {filled(site.email) && <li><Icon name="mail" /><span><strong>El. paštas</strong><a href={`mailto:${site.email}`}>{site.email}</a></span></li>}
+      <li><Icon name="clock" /><span><strong>Darbo laikas</strong>{site.hoursSentence}</span></li>
+    </ul>
+  </address>
+  <div class="btn-row">
+    <a class="btn btn-primary" href={site.phoneHref}><Icon name="phone" />Skambinti</a>
+    <a class="btn btn-secondary" href={site.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />Maršrutas</a>
+  </div>
+</div>

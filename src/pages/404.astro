@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../config/site';
+import { services, serviceUrl } from '../data/services';
+---
+<Base title="Puslapis nerastas | Leonardo autoservisas" description="Toks puslapis nerastas. Leonardo autoservisas – Laisvės pr. 125, Vilnius, tel. +370 699 47163. Grįžkite į pradžią arba pasirinkite paslaugą." path="/404.html" noindex>
+  <section class="notfound">
+    <div class="wrap narrow">
+      <picture>
+        <source type="image/webp" srcset="/img/emblema-400w.webp">
+        <img src="/img/emblema-400w.png" width="260" height="158" alt="Leonardo autoserviso emblema – rožė su sukryžiuotais stūmokliais">
+      </picture>
+      <p class="ribbon" style="margin-inline:auto">Klaida 404</p>
+      <h1>Tokio puslapio nėra</h1>
+      <p class="lead" style="margin-inline:auto">Galbūt nuoroda pasikeitė. Grįžkite į pradžią, pasirinkite paslaugą arba paskambinkite.</p>
+      <div class="btn-row" style="justify-content:center;margin:24px 0">
+        <a class="btn btn-primary" href="/">Į pradžią</a>
+        <a class="btn btn-secondary" href={site.phoneHref}><Icon name="phone" />{site.phone.replace(/ /g, ' ')}</a>
+      </div>
+      <ul class="chips" style="justify-content:center">
+        {services.map((s) => <li><a href={serviceUrl(s)}>{s.name}</a></li>)}
+      </ul>
+    </div>
+  </section>
+</Base>

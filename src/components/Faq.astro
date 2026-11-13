@@ -1,0 +1,14 @@
+---
+import type { QA } from '../data/services';
+interface Props { items: QA[]; openFirst?: boolean }
+import { nb } from "../lib/nb";
+const { items, openFirst = true } = Astro.props;
+---
+<div class="faq">
+  {items.map((x, i) => (
+    <details open={openFirst && i === 0}>
+      <summary>{x.q}</summary>
+      <div class="answer"><p>{nb(x.a)}</p></div>
+    </details>
+  ))}
+</div>

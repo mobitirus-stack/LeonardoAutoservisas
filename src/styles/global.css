@@ -1,0 +1,360 @@
+/* ================================================================
+   Leonardo autoservisas – „modernus vintažas“
+   Design tokens + bazė + komponentai
+   ================================================================ */
+@font-face{font-family:"Inter";src:url(/fonts/inter.woff2) format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
+@font-face{font-family:"Fraunces";src:url(/fonts/fraunces.woff2) format("woff2");font-weight:500 700;font-style:normal;font-display:swap}
+@font-face{font-family:"Grenze Gotisch";src:url(/fonts/grenze-gotisch.woff2) format("woff2");font-weight:600;font-style:normal;font-display:swap}
+/* Fallback metrikos – mažina CLS keičiantis šriftui */
+@font-face{font-family:"Inter Fallback";src:local("Arial"),local("Helvetica");size-adjust:107%;ascent-override:90%;descent-override:22.5%;line-gap-override:0%}
+@font-face{font-family:"Fraunces Fallback";src:local("Georgia"),local("Times New Roman");size-adjust:103%;ascent-override:94%;descent-override:24%;line-gap-override:0%}
+@font-face{font-family:"Grenze Fallback";src:local("Georgia");size-adjust:82%;ascent-override:100%;descent-override:30%;line-gap-override:0%}
+
+:root{
+  --burgundy:#893842;
+  --burgundy-deep:#5E222A;
+  --burgundy-ink:#3B1419;
+  --rose:#A55D67;
+  --rose-soft:#F3E4E3;
+  --cream:#FAF5F0;
+  --cream-2:#F4ECE4;
+  --paper:#FFFFFF;
+  --ink:#1F1A1B;
+  --ink-muted:#5F5557;
+  --line:rgba(137,56,66,.16);
+  --line-strong:rgba(137,56,66,.32);
+  --on-dark:#FAF5F0;
+  --on-dark-muted:#E5D3D1;
+
+  --font-body:"Inter","Inter Fallback",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --font-display:"Fraunces","Fraunces Fallback",Georgia,"Times New Roman",serif;
+  --font-goth:"Grenze Gotisch","Grenze Fallback",Georgia,serif;
+
+  --radius:14px;
+  --radius-sm:10px;
+  --wrap:1200px;
+  --gutter:clamp(16px,4vw,32px);
+  --section:clamp(64px,9vw,112px);
+  --shadow:0 1px 2px rgba(59,20,25,.06),0 8px 24px -12px rgba(59,20,25,.18);
+  --shadow-lift:0 2px 4px rgba(59,20,25,.06),0 18px 36px -16px rgba(59,20,25,.30);
+  --paper-noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .2 0 0 0 0 .18 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E");
+  color-scheme:light;
+}
+
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.28s}
+@media (prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:96px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--cream) var(--paper-noise);color:var(--ink);font:400 1.0625rem/1.65 var(--font-body);text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+img,svg,picture{display:block;max-width:100%}
+img{height:auto}
+a{color:var(--burgundy);text-decoration-thickness:1px;text-underline-offset:.2em}
+a:hover{color:var(--burgundy-deep)}
+:focus-visible{outline:3px solid var(--burgundy);outline-offset:3px;border-radius:6px}
+.on-dark :focus-visible{outline-color:var(--cream)}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.12;letter-spacing:-.01em;margin:0 0 .55em;color:var(--ink);text-wrap:balance}
+h1{font-size:clamp(2.1rem,1.4rem + 2.6vw,3.5rem);font-weight:650}
+h2{font-size:clamp(1.75rem,1.25rem + 2vw,2.75rem)}
+h3{font-size:clamp(1.2rem,1.1rem + .4vw,1.4rem)}
+p{margin:0 0 1em}
+p,li{text-wrap:pretty}
+ul,ol{padding-left:1.25em}
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gutter)}
+.narrow{max-width:760px}
+.visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-9999px;top:10px;z-index:100;background:var(--paper);color:var(--ink);padding:10px 14px;border-radius:8px;box-shadow:var(--shadow)}
+.skip:focus{left:10px}
+.muted{color:var(--ink-muted)}
+.lead{font-size:clamp(1.08rem,1rem + .35vw,1.25rem);color:var(--ink-muted);max-width:40em}
+.goth{font-family:var(--font-goth);font-weight:600;letter-spacing:0}
+
+/* ---------- Mygtukai: pilnas bordo + „štampuota“ dviguba kraštinė ---------- */
+.btn{--b:var(--burgundy);display:inline-flex;align-items:center;justify-content:center;gap:.55em;min-height:50px;padding:.75em 1.35em;border-radius:12px;font:600 1rem/1.15 var(--font-body);text-decoration:none;cursor:pointer;border:0;transition:background-color .18s,color .18s,box-shadow .18s,transform .18s;white-space:nowrap}
+.btn svg{width:20px;height:20px;flex:none}
+.btn-primary{background:var(--b);color:#fff;box-shadow:inset 0 0 0 2px var(--b),inset 0 0 0 3.5px rgba(250,245,240,.55)}
+.btn-primary:hover{--b:var(--burgundy-deep);color:#fff}
+.btn-secondary{background:transparent;color:var(--burgundy);box-shadow:inset 0 0 0 2px var(--burgundy)}
+.btn-secondary:hover{background:var(--rose-soft);color:var(--burgundy-deep)}
+.btn-cream{background:var(--cream);color:var(--burgundy-deep);box-shadow:inset 0 0 0 2px var(--cream),inset 0 0 0 3.5px rgba(137,56,66,.45)}
+.btn-cream:hover{background:#fff;color:var(--burgundy-deep)}
+.btn-ghost-light{background:transparent;color:var(--cream);box-shadow:inset 0 0 0 2px rgba(250,245,240,.7)}
+.btn-ghost-light:hover{background:rgba(250,245,240,.12);color:#fff}
+@media (prefers-reduced-motion:no-preference){.btn:active{transform:translateY(1px)}}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ---------- Kaspinas (tattoo banner) ---------- */
+.ribbon{position:relative;display:inline-flex;align-items:center;gap:.5em;margin:0 0 1rem;padding:.42em 1.9em;background:var(--burgundy);color:var(--cream);font:600 .78rem/1.2 var(--font-body);letter-spacing:.16em;text-transform:uppercase;clip-path:polygon(0 0,100% 0,calc(100% - .85em) 50%,100% 100%,0 100%,.85em 50%)}
+.ribbon::before{content:"";position:absolute;inset:3px 1.15em;border-block:1px solid rgba(250,245,240,.45);pointer-events:none}
+.ribbon-light{background:var(--cream);color:var(--burgundy-deep)}
+.ribbon-light::before{border-color:rgba(137,56,66,.4)}
+.ribbon .goth{font-size:1.45em;letter-spacing:.02em;text-transform:none;line-height:.9}
+
+/* Žvaigždučių skirtukas */
+.stars-divider{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--rose);margin:0 auto 18px;max-width:240px}
+.stars-divider::before,.stars-divider::after{content:"";flex:1;height:1px;background:currentColor;opacity:.5;box-shadow:0 4px 0 -0px rgba(165,93,103,.25)}
+.stars-divider svg{width:14px;height:14px}
+
+/* ---------- Header ---------- */
+.site-header{position:sticky;top:0;z-index:50;background:rgba(250,245,240,.88);-webkit-backdrop-filter:saturate(1.2) blur(10px);backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--line);box-shadow:0 3px 0 -2px var(--line)}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--burgundy)}
+.brand img{width:72px;height:44px}
+.brand-text{display:flex;flex-direction:column;line-height:1}
+.brand-name{font-family:var(--font-goth);font-weight:600;font-size:1.95rem;line-height:.9;letter-spacing:.01em}
+.brand-sub{font:600 .66rem/1 var(--font-body);letter-spacing:.32em;text-transform:uppercase;color:var(--burgundy-deep);margin-top:5px;padding-left:2px}
+.nav{display:flex;align-items:center;gap:2px}
+.nav a{color:var(--ink);text-decoration:none;font-weight:500;font-size:.98rem;padding:10px 14px;border-radius:10px}
+.nav a:hover{background:var(--rose-soft);color:var(--burgundy-deep)}
+.nav a[aria-current="page"]{color:var(--burgundy);box-shadow:inset 0 -2px 0 var(--burgundy);border-radius:10px 10px 0 0}
+.header-call{min-height:46px;padding:.6em 1.1em}
+@media (max-width:899px){.nav{display:none}.header-call .label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.header-call{padding:.6em .8em}.brand img{width:59px;height:36px}.brand-name{font-size:1.65rem}}
+.menu-mobile{display:none}
+@media (max-width:899px){.menu-mobile{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;border-top:1px solid var(--line);padding:4px var(--gutter)}.menu-mobile a{flex:none;color:var(--ink);text-decoration:none;font-weight:500;font-size:.95rem;padding:9px 12px;border-radius:8px}.menu-mobile a[aria-current="page"]{color:var(--burgundy);font-weight:600}}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;isolation:isolate;background:var(--burgundy-ink);color:var(--on-dark);overflow:hidden;min-height:max(620px,calc(100svh - 72px));display:flex;align-items:center}
+.hero-media{position:absolute;inset:0;z-index:-2}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:62% 40%}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:
+  linear-gradient(180deg,rgba(26,8,11,.25) 0%,rgba(26,8,11,0) 30%,rgba(26,8,11,.55) 100%),
+  linear-gradient(90deg,rgba(38,11,16,.9) 0%,rgba(59,20,25,.62) 40%,rgba(59,20,25,.18) 72%,rgba(26,8,11,.1) 100%)}
+.hero-watermark{position:absolute;z-index:-1;left:-8%;bottom:-14%;width:min(620px,70vw);aspect-ratio:600/365;background:var(--cream);opacity:.045;-webkit-mask:url(/img/emblema-mask.png) center/contain no-repeat;mask:url(/img/emblema-mask.png) center/contain no-repeat;mask-mode:luminance;-webkit-mask-mode:luminance;pointer-events:none}
+.hero-inner{padding-block:clamp(56px,10vh,120px);position:relative}
+.hero-copy{max-width:720px}
+@media (min-width:700px){.hero-media{left:28%}.hero-media img{object-position:50% 38%;-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 22%,#000 48%);mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 22%,#000 48%)}}
+.hero h1{color:var(--cream);margin-bottom:.45em}
+.hero h1 .accent{display:block;color:#F1D4D2;font-style:normal}
+.hero .lead{color:var(--on-dark-muted);font-size:clamp(1.08rem,1rem + .4vw,1.3rem)}
+.hero .btn-row{margin:28px 0 30px}
+.trust{display:flex;flex-wrap:wrap;gap:10px 22px;margin:0;padding:16px 0 0;list-style:none;border-top:1px solid rgba(250,245,240,.22);max-width:640px;font-size:.98rem;color:var(--on-dark)}
+.trust li{display:flex;align-items:center;gap:8px}
+.trust svg{width:18px;height:18px;color:#F1D4D2;flex:none}
+@media (max-width:699px){
+  .hero{min-height:calc(88svh - 112px);align-items:flex-end}
+  .hero::before{background:linear-gradient(180deg,rgba(26,8,11,.35) 0%,rgba(38,11,16,.55) 35%,rgba(38,11,16,.92) 68%,rgba(38,11,16,.98) 100%)}
+  .hero-media img{object-position:50% 20%}
+  .hero-inner{padding-block:150px 36px}
+  .hero h1{font-size:clamp(1.9rem,1.3rem + 3vw,2.4rem)}
+  .trust{flex-direction:column;gap:8px}
+}
+
+/* ---------- Sekcijos ---------- */
+.section{padding-block:var(--section);position:relative}
+.section-head{max-width:760px;margin-bottom:clamp(28px,4vw,48px)}
+.section-head.center{margin-inline:auto;text-align:center}
+.section-head.center .ribbon{margin-inline:auto}
+.section-alt{background:var(--cream-2) var(--paper-noise)}
+.section-dark{background:var(--burgundy-deep);color:var(--on-dark);isolation:isolate;overflow:hidden}
+.section-dark h2,.section-dark h3{color:var(--cream)}
+.section-dark .lead,.section-dark p{color:var(--on-dark-muted)}
+.section-dark a:not(.btn){color:#fff}
+.watermark{position:absolute;z-index:-1;width:min(620px,80vw);aspect-ratio:600/365;background:var(--cream);opacity:.05;-webkit-mask:url(/img/emblema-mask.png) center/contain no-repeat;mask:url(/img/emblema-mask.png) center/contain no-repeat;mask-mode:luminance;-webkit-mask-mode:luminance;pointer-events:none}
+
+/* Flash-sheet rėmelis: dviguba plona linija */
+.frame{position:relative;background:var(--paper);border:1px solid var(--line-strong);border-radius:var(--radius);box-shadow:var(--shadow)}
+.frame::after{content:"";position:absolute;inset:6px;border:1px solid var(--line);border-radius:calc(var(--radius) - 5px);pointer-events:none}
+
+/* Apie */
+.about-grid{display:grid;gap:clamp(28px,5vw,64px);align-items:start}
+@media (min-width:900px){.about-grid{grid-template-columns:1.15fr 1fr}}
+.about-text p{font-size:1.125rem}
+.facts{margin:0;padding:clamp(18px,3vw,28px)}
+.facts div{display:grid;grid-template-columns:minmax(7.5em,auto) 1fr;gap:6px 16px;padding:13px 4px;border-bottom:1px dashed var(--line-strong)}
+.facts div:last-child{border-bottom:0}
+.facts dt{color:var(--ink-muted);font-weight:500;font-size:.95rem}
+.facts dd{margin:0;font-weight:600}
+@media (max-width:420px){.facts div{grid-template-columns:1fr;gap:2px}}
+
+/* Paslaugų kortelės */
+.svc-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(min(100%,265px),1fr));list-style:none;padding:0;margin:0}
+.svc-grid.featured{grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));margin-bottom:18px}
+.svc-card{position:relative;display:flex;flex-direction:column;height:100%;padding:24px 22px 22px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);transition:border-color .2s,transform .2s,box-shadow .2s;container-type:inline-size}
+.svc-card::after{content:"";position:absolute;inset:6px;border:1px solid transparent;border-radius:calc(var(--radius) - 5px);pointer-events:none;transition:border-color .2s}
+.svc-card:hover{border-color:var(--burgundy);box-shadow:var(--shadow-lift)}
+.svc-card:hover::after{border-color:var(--line)}
+@media (prefers-reduced-motion:no-preference){.svc-card:hover{transform:translateY(-3px)}}
+.svc-card h3{margin:.1em 0 .45em}
+.svc-card h3 a{color:var(--ink);text-decoration:none}
+.svc-card h3 a::after{content:"";position:absolute;inset:0;border-radius:var(--radius)}
+.svc-card p{color:var(--ink-muted);margin:0 0 1em;font-size:1rem}
+.svc-card .more{margin-top:auto;display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--burgundy);font-size:.95rem}
+.svc-card .more svg{width:16px;height:16px;transition:transform .2s}
+.svc-card:hover .more svg{transform:translateX(3px)}
+.svc-icon{width:52px;height:52px;display:grid;place-items:center;border-radius:50%;background:var(--rose-soft);color:var(--burgundy);margin-bottom:14px;box-shadow:inset 0 0 0 1px var(--line-strong),0 0 0 4px var(--paper),0 0 0 5px var(--line)}
+.svc-icon svg{width:28px;height:28px}
+.svc-card.is-featured{padding:30px 28px 26px;background:linear-gradient(180deg,#fff 0%,#fff 60%,#FDF8F6 100%);border-color:var(--line-strong)}
+.svc-card.is-featured::after{border-color:var(--line)}
+.svc-card.is-featured h3{font-size:clamp(1.4rem,1.2rem + .6vw,1.75rem)}
+.svc-card.is-featured .svc-icon{width:64px;height:64px}
+.svc-card.is-featured .svc-icon svg{width:34px;height:34px}
+.tag{display:inline-block;align-self:flex-start;font:600 .7rem/1 var(--font-body);letter-spacing:.14em;text-transform:uppercase;color:var(--burgundy);padding:6px 9px;border:1px solid var(--line-strong);border-radius:999px;margin-bottom:12px}
+.price-from{font-weight:600;color:var(--burgundy-deep);margin:-.4em 0 1em}
+
+/* Kodėl mes */
+.why-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));list-style:none;margin:0;padding:0}
+.why-item{padding:24px 22px;border:1px solid rgba(250,245,240,.22);border-radius:var(--radius);position:relative;background:rgba(255,255,255,.03)}
+.why-item::after{content:"";position:absolute;inset:6px;border:1px solid rgba(250,245,240,.1);border-radius:calc(var(--radius) - 5px);pointer-events:none}
+.why-item svg{width:30px;height:30px;color:#F1D4D2;margin-bottom:14px}
+.why-item h3{font-size:1.25rem;margin-bottom:.4em}
+.why-item p{margin:0;font-size:1rem}
+
+/* Kaip vyksta */
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:20px;counter-reset:step}
+@media (min-width:900px){.steps{grid-template-columns:repeat(4,1fr);gap:24px}}
+.steps li{position:relative;padding:0 0 0 72px;counter-increment:step}
+@media (min-width:900px){.steps li{padding:76px 6px 0 0}}
+.steps li::before{content:counter(step);position:absolute;left:0;top:0;width:54px;height:54px;display:grid;place-items:center;border-radius:50%;background:var(--paper);color:var(--burgundy);font:600 1.5rem/1 var(--font-display);box-shadow:inset 0 0 0 1.5px var(--burgundy),0 0 0 4px var(--cream),0 0 0 5px var(--line-strong)}
+@media (min-width:900px){.steps li:not(:last-child)::after{content:"";position:absolute;top:27px;left:66px;right:-12px;border-top:1.5px dashed var(--line-strong)}}
+.steps h3{font-size:1.2rem;margin-bottom:.35em}
+.steps p{margin:0;color:var(--ink-muted);font-size:1rem}
+
+/* Atsiliepimai */
+.rating-box{display:grid;gap:24px;align-items:center;padding:clamp(24px,4vw,44px);text-align:center}
+@media (min-width:800px){.rating-box{grid-template-columns:auto 1fr auto;text-align:left;gap:40px}}
+.rating-num{font:600 clamp(3.6rem,2.8rem + 3vw,5.4rem)/1 var(--font-display);color:var(--burgundy)}
+.rating-num small{font-size:.38em;color:var(--ink-muted);font-weight:500}
+.stars{display:flex;gap:4px;color:var(--burgundy);justify-content:center}
+@media (min-width:800px){.stars{justify-content:flex-start}}
+.stars svg{width:24px;height:24px}
+.rating-box p{margin:.6em 0 0;color:var(--ink-muted)}
+
+/* Vietovės */
+.chips{display:flex;flex-wrap:wrap;gap:10px;list-style:none;margin:20px 0 0;padding:0}
+.chips li{padding:8px 16px;background:var(--paper);border:1px solid var(--line-strong);border-radius:999px;font-weight:500;font-size:.98rem}
+.chips li.is-home{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+
+/* DUK */
+.faq{display:grid;gap:12px;max-width:860px}
+.faq details{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);transition:border-color .2s,box-shadow .2s}
+.faq details[open]{border-color:var(--line-strong);box-shadow:var(--shadow)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;font:600 1.125rem/1.35 var(--font-display);color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";flex:none;width:28px;height:28px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--burgundy);background:linear-gradient(var(--burgundy),var(--burgundy)) center/12px 1.5px no-repeat,linear-gradient(var(--burgundy),var(--burgundy)) center/1.5px 12px no-repeat;transition:transform .2s}
+.faq details[open] summary::after{background:linear-gradient(var(--burgundy),var(--burgundy)) center/12px 1.5px no-repeat}
+.faq summary:hover{color:var(--burgundy-deep)}
+.faq .answer{padding:0 22px 20px}
+.faq .answer p{margin:0}
+
+/* Kontaktai */
+.contact-grid{display:grid;gap:clamp(20px,4vw,40px)}
+@media (min-width:900px){.contact-grid{grid-template-columns:1fr 1fr}}
+.contact-card{padding:clamp(22px,3.5vw,34px)}
+address{font-style:normal}
+.contact-list{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:14px}
+.contact-list li{display:flex;gap:14px;align-items:flex-start}
+.contact-list svg{width:22px;height:22px;color:var(--burgundy);flex:none;margin-top:2px}
+.contact-list strong{display:block}
+.contact-list a{font-weight:600}
+.hours{width:100%;border-collapse:collapse}
+.hours caption{text-align:left;font:600 1.3rem/1.2 var(--font-display);margin-bottom:12px}
+.hours th,.hours td{text-align:left;padding:12px 4px;border-bottom:1px dashed var(--line-strong)}
+.hours tr:last-child th,.hours tr:last-child td{border-bottom:0}
+.hours th{font-weight:500;color:var(--ink-muted)}
+.hours td{font-weight:600;text-align:right}
+.note{font-size:.9rem;color:var(--ink-muted);margin-top:10px}
+
+/* Žemėlapis */
+.map{position:relative;width:100%;aspect-ratio:4/3;max-height:520px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line-strong);background:var(--cream-2)}
+@media (min-width:900px){.map{aspect-ratio:21/9}}
+.map-facade{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center;background:
+  radial-gradient(circle at 50% 46%,rgba(137,56,66,.12) 0 60px,transparent 61px),
+  linear-gradient(rgba(137,56,66,.08) 1px,transparent 1px) 0 0/36px 36px,
+  linear-gradient(90deg,rgba(137,56,66,.08) 1px,transparent 1px) 0 0/36px 36px,var(--cream-2)}
+.map-facade::before{content:"";position:absolute;left:0;right:0;top:58%;height:22px;background:rgba(255,255,255,.75);transform:rotate(-8deg);box-shadow:0 0 0 1px rgba(137,56,66,.12)}
+.map-facade>*{position:relative}
+.map-pin{width:52px;height:52px;color:var(--burgundy);filter:drop-shadow(0 6px 8px rgba(59,20,25,.25))}
+.map-facade p{margin:0;font-weight:600;background:rgba(250,245,240,.9);padding:4px 12px;border-radius:8px}
+.map iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* Final CTA */
+.cta-band{padding-block:clamp(56px,8vw,88px);text-align:center}
+.cta-band .watermark{left:50%;top:50%;transform:translate(-50%,-50%)}
+.cta-band h2{max-width:20em;margin-inline:auto}
+.cta-band .btn-row{justify-content:center;margin-top:26px}
+.cta-emblem{width:120px;height:auto;margin:0 auto 18px;padding:10px 12px;background:var(--cream);border-radius:14px;box-shadow:0 0 0 3px var(--burgundy-deep),0 0 0 4px rgba(250,245,240,.4)}
+
+/* Footer */
+.site-footer{background:var(--burgundy-ink);color:var(--on-dark-muted);padding:clamp(48px,7vw,80px) 0 calc(28px + env(safe-area-inset-bottom));position:relative;isolation:isolate;overflow:hidden;font-size:.98rem}
+.site-footer .watermark{right:-6%;bottom:-10%}
+.site-footer a{color:var(--cream)}
+.site-footer a:hover{color:#fff}
+.footer-grid{display:grid;gap:32px}
+@media (min-width:900px){.footer-grid{grid-template-columns:1.2fr 1fr 1fr 1fr}}
+.footer-sticker{display:inline-block;background:var(--cream) var(--paper-noise);padding:14px 18px;border-radius:16px;box-shadow:0 0 0 3px var(--burgundy-ink),0 0 0 4px rgba(250,245,240,.35);margin-bottom:18px;transform:rotate(-2deg)}
+.footer-sticker img{width:180px;height:auto}
+.footer-title{font:600 1.15rem/1.2 var(--font-display);color:var(--cream);margin:0 0 14px}
+.footer-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.footer-list a{text-decoration:none}
+.footer-list a:hover{text-decoration:underline}
+.footer-meta{margin-top:40px;padding-top:22px;border-top:1px solid rgba(250,245,240,.15);display:flex;flex-wrap:wrap;gap:8px 24px;font-size:.9rem}
+
+/* Mobili CTA juosta */
+.call-bar{position:fixed;inset:auto 0 0 0;z-index:60;display:grid;grid-template-columns:1.4fr 1fr;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(250,245,240,.96);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid var(--line-strong);box-shadow:0 -6px 20px rgba(59,20,25,.1)}
+.call-bar .btn{min-height:48px;padding-inline:.8em}
+@media (max-width:899px){body{padding-bottom:72px}}
+@media (min-width:900px){.call-bar{display:none}}
+
+/* Breadcrumbs */
+.crumbs{font-size:.92rem;color:var(--ink-muted);padding-top:22px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.crumbs li+li::before{content:"✦";color:var(--rose);margin-right:6px;font-size:.7em;vertical-align:middle}
+.crumbs a{color:var(--ink-muted)}
+.crumbs [aria-current]{color:var(--ink);font-weight:500}
+
+/* Vidinių puslapių antraštė */
+.page-head{padding:clamp(28px,5vw,56px) 0 clamp(36px,5vw,56px);border-bottom:1px solid var(--line);position:relative;overflow:hidden;isolation:isolate}
+.page-head .watermark{position:absolute;z-index:-1;right:-3%;top:50%;transform:translateY(-50%);width:min(440px,50vw);aspect-ratio:600/365;background:var(--burgundy);opacity:.06;-webkit-mask:url(/img/emblema-mask.png) center/contain no-repeat;mask:url(/img/emblema-mask.png) center/contain no-repeat;mask-mode:luminance;-webkit-mask-mode:luminance}
+.page-head h1{font-size:clamp(2rem,1.4rem + 2.6vw,3.4rem);max-width:18em}
+
+/* Paslaugos puslapis */
+.svc-layout{display:grid;gap:clamp(32px,5vw,64px);padding-block:clamp(36px,6vw,72px)}
+@media (min-width:1000px){.svc-layout{grid-template-columns:minmax(0,1fr) 340px;align-items:start}}
+.answer-box{padding:clamp(20px,3vw,30px);margin-bottom:28px}
+.answer-box p{font-size:1.15rem;margin:0}
+.answer-box .label{display:block;font:600 .72rem/1 var(--font-body);letter-spacing:.16em;text-transform:uppercase;color:var(--burgundy);margin-bottom:10px}
+.prose h2{font-size:clamp(1.45rem,1.2rem + 1vw,2rem);margin-top:1.8em}
+.prose ul{list-style:none;padding:0}
+.prose ul li{position:relative;padding-left:28px;margin-bottom:.55em}
+.prose ul li::before{content:"";position:absolute;left:4px;top:.55em;width:9px;height:9px;transform:rotate(45deg);background:var(--rose);box-shadow:0 0 0 3px var(--rose-soft)}
+.prose ol.process{list-style:none;padding:0;counter-reset:p}
+.prose ol.process li{position:relative;counter-increment:p;padding:2px 0 14px 52px;margin:0}
+.prose ol.process li::before{content:counter(p);position:absolute;left:0;top:0;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;font:600 1rem/1 var(--font-display);color:var(--burgundy);box-shadow:inset 0 0 0 1.5px var(--burgundy)}
+.prose ol.process li:not(:last-child)::after{content:"";position:absolute;left:17px;top:38px;bottom:2px;border-left:1.5px dashed var(--line-strong)}
+.aside{display:grid;gap:18px}
+@media (min-width:1000px){.aside{position:sticky;top:96px}}
+.aside-card{padding:24px}
+.aside-card h2{font-size:1.3rem;margin-bottom:.6em}
+.aside-card .btn{width:100%;margin-top:10px}
+.aside-card ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.98rem}
+.updated{margin-top:36px;font-size:.92rem;color:var(--ink-muted)}
+.related{margin-top:8px}
+
+/* Turinio puslapiai */
+.legal h2{font-size:1.5rem;margin-top:1.6em}
+.legal{padding-block:clamp(32px,5vw,64px)}
+
+/* 404 */
+.notfound{min-height:70vh;display:grid;place-items:center;text-align:center;padding-block:64px}
+.notfound img{width:260px;margin:0 auto 18px}
+
+/* ---------- Scroll-driven „reveal“ (tik jei palaikoma ir judesys leidžiamas) ---------- */
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{animation:reveal linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+    @keyframes reveal{from{opacity:.001;transform:translateY(22px)}to{opacity:1;transform:none}}
+  }
+}
+
+/* Slapukų juosta (tik jei GA4_ID) */
+.consent{position:fixed;left:12px;right:12px;bottom:84px;z-index:70;max-width:520px;margin-inline:auto;padding:18px;background:var(--paper);border:1px solid var(--line-strong);border-radius:var(--radius);box-shadow:var(--shadow-lift)}
+@media (min-width:900px){.consent{bottom:16px}}
+.consent p{margin:0 0 12px;font-size:.95rem}
+
+@media print{.site-header,.call-bar,.map,.cta-band{display:none}body{background:#fff}}
+.ribbon .ribbon-icon{width:1.35em;height:1.35em;margin-block:-.3em}
+.hero-media picture{height:100%}
+.section-dark .ribbon-light,.on-dark .ribbon-light{color:var(--burgundy-deep)}
+.page-head .crumbs{margin-bottom:22px;padding-top:0}
