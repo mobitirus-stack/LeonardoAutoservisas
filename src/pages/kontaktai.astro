@@ -4,7 +4,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Ribbon from '../components/Ribbon.astro';
 import ContactCard from '../components/ContactCard.astro';
 import Hours from '../components/Hours.astro';
-import MapFacade from '../components/MapFacade.astro';
+import MapEmbed from '../components/MapEmbed.astro';
 import { site, filled, BUILD_DATE } from '../config/site';
 import { graph, businessNode, websiteNode, webPageNode, breadcrumbNode } from '../lib/schema';
 
@@ -39,7 +39,7 @@ const schema = graph([businessNode(), websiteNode(), webPageNode({ path, title, 
       <h2 id="map-h">Kaip atvykti į Leonardo autoservisą?</h2>
       <p>Servisas įsikūręs Pašilaičiuose, prie Laisvės prospekto, adresu {site.address.full}.{filled(site.entrance) ? ` ${site.entrance}` : ' Tikslų įvažiavimą pasakysime paskambinus.'}</p>
       {!filled(site.entrance) && <Fragment set:html={'<!-- TODO_ENTRANCE: patikslinti įvažiavimą (galbūt iš J. Baltrušaičio g.) -->'} />}
-      <MapFacade />
+      <MapEmbed />
       <p class="updated">Atnaujinta: <time datetime={BUILD_DATE}>{BUILD_DATE}</time></p>
     </div>
   </section>

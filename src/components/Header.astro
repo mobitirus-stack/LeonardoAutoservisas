@@ -1,6 +1,7 @@
 ---
 import { site } from '../config/site';
 import Icon from './Icon.astro';
+import { nb } from '../lib/nb';
 const path = Astro.url.pathname;
 const links = [
   { href: '/paslaugos/', label: 'Paslaugos' },
@@ -19,7 +20,7 @@ const current = (href: string) => (href !== '/#duk' && path.startsWith(href) ? '
       {links.map((l) => <a href={l.href} aria-current={current(l.href)}>{l.label}</a>)}
     </nav>
     <a class="btn btn-primary header-call" href={site.phoneHref}>
-      <Icon name="phone" /><span class="label">Skambinti</span><span class="visually-hidden"> {site.phone}</span>
+      <Icon name="phone" /><span class="label">Skambinti</span><span class="visually-hidden"> {nb(site.phone)}</span>
     </a>
   </div>
   <nav class="menu-mobile" aria-label="Meniu">

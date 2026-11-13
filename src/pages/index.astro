@@ -6,7 +6,7 @@ import ServiceCard from '../components/ServiceCard.astro';
 import Faq from '../components/Faq.astro';
 import ContactCard from '../components/ContactCard.astro';
 import Hours from '../components/Hours.astro';
-import MapFacade from '../components/MapFacade.astro';
+import MapEmbed from '../components/MapEmbed.astro';
 import Stars from '../components/Stars.astro';
 import { site, SHOW_UNCONFIRMED_SERVICES } from '../config/site';
 import { services } from '../data/services';
@@ -162,6 +162,10 @@ const leadServices = SHOW_UNCONFIRMED_SERVICES
       <ul class="chips">
         {site.areas.map((a, i) => <li class:list={{ 'is-home': i === 0 }}>{a}</li>)}
       </ul>
+      <p class="areas-more">…taip pat ir iš kitų Vilniaus rajonų.</p>
+    </div>
+    <div class="wrap areas-map">
+      <MapEmbed />
     </div>
   </section>
 
@@ -185,13 +189,6 @@ const leadServices = SHOW_UNCONFIRMED_SERVICES
         <ContactCard />
         <div class="frame contact-card"><Hours /><p class="note">Prieš atvykstant rekomenduojame paskambinti.</p></div>
       </div>
-    </div>
-  </section>
-
-  <section class="section" id="zemelapis" aria-labelledby="zemelapis-h" style="padding-top:0">
-    <div class="wrap">
-      <h2 id="zemelapis-h">Raskite mus žemėlapyje</h2>
-      <MapFacade />
     </div>
   </section>
 

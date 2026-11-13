@@ -1,0 +1,7 @@
+---
+import { site } from '../config/site';
+---
+<div class="map">
+  <iframe src={site.MAP_EMBED_URL} title={`Leonardo autoservisas žemėlapyje – ${site.address.street}, ${site.address.city}`} width="600" height="450" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+<p class="note"><a href={site.mapsUrl} rel="noopener" target="_blank">Atidaryti „Google Maps“ ir gauti maršrutą</a></p>

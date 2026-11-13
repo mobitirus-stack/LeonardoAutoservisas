@@ -225,6 +225,8 @@ ul,ol{padding-left:1.25em}
 .chips{display:flex;flex-wrap:wrap;gap:10px;list-style:none;margin:20px 0 0;padding:0}
 .chips li{padding:8px 16px;background:var(--paper);border:1px solid var(--line-strong);border-radius:999px;font-weight:500;font-size:.98rem}
 .chips li.is-home{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+.areas-more{margin:16px 0 0;font-style:italic;color:var(--ink-muted)}
+.areas-map{margin-top:36px}
 
 /* DUK */
 .faq{display:grid;gap:12px;max-width:860px}

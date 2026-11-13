@@ -51,12 +51,13 @@ export const site = {
   /** Parkavimas – TODO */
   parking: 'TODO_PARKING',
 
-  geo: { lat: 'TODO_LAT', lng: 'TODO_LNG' },
+  /** Iš kliento pateikto oficialaus „Google Maps“ embed kodo */
+  geo: { lat: '54.7277283', lng: '25.235555' },
 
   mapsCid: '15243629170133193209',
   mapsUrl: 'https://maps.google.com/?cid=15243629170133193209',
   MAP_EMBED_URL:
-    'https://maps.google.com/maps?q=Leonardo%20autoservisas%2C%20Laisv%C4%97s%20pr.%20125%2C%20Vilnius&output=embed',
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2621.966779204012!2d25.235555!3d54.727728299999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dd94055529fabf%3A0xd38c3ff74d9251f9!2sLeonardo%20autoservisas!5e1!3m2!1slt!2slt!4v1794585451661!5m2!1slt!2slt',
 
   rating: { value: 4.5, valueText: '4,5', count: 48, source: 'Google', asOf: '2026-11' },
   /** Atsiliepimų tekstų NEKURTI – tik tikri, su kliento sutikimu. */

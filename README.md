@@ -47,7 +47,6 @@ Kompiuterinė diagnostika, Važiuoklės remontas, Techninė priežiūra ir filtr
 | Darbo laikas (dabar placeholderis I–V 08:00–17:00) | `site.ts` → `hours`, `hoursShort`, `hoursSentence`, `hoursTodo:false`; `faq.ts` 2-as klausimas |
 | El. paštas | `site.ts` → `email` |
 | Įvažiavimas (galbūt iš J. Baltrušaičio g.), parkavimas | `site.ts` → `entrance`, `parking` |
-| Koordinatės | `site.ts` → `geo` (įrašius – atsiras `geo` schemoje ir ai.json) |
 | Rekvizitai | `site.ts` → `legalName`, `companyCode`, `vatCode` (privatumo politika) |
 | Facebook | `site.ts` → `social.facebook` (atsiras `sameAs`) |
 | Kainos | `services.ts` → `priceFrom` (rodoma „nuo X €“ + `Offer` schema) |
